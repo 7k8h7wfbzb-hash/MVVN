@@ -24,11 +24,11 @@ class AuthRepositorio {
         return try context.fetch(descriptor).first
     }
 
-    func existeUsuario(usuario: String) async throws -> Bool {
+    func existeUsuario(usuarioBuscado: String) async throws -> Bool {
         let descriptor = FetchDescriptor<Empleado>(
-            predicate: #Predicate { $0.usuario == usuario }
+            predicate: #Predicate { $0.usuario == usuarioBuscado }
         )
-        return !try context.fetch(descriptor).isEmpty
+        return try !context.fetch(descriptor).isEmpty
     }
 
     func guardarRegistro(persona: Persona, empleado: Empleado) async throws {

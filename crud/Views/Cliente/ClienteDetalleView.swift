@@ -1,5 +1,5 @@
 //
-//  EmpleadoDetalleView.swift
+//  ClienteDetalleView.swift
 //  crud
 //
 //  Created by Kleber Oswaldo Muy Landi on 9/4/26.
@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct EmpleadoDetalleView: View {
+struct ClienteDetalleView: View {
 
-    let empleado: Empleado
+    let cliente: Cliente
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                if let persona = empleado.persona {
+                if let persona = cliente.persona {
                     if let imagenData = persona.imagen, let uiImage = UIImage(data: imagenData) {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -36,7 +36,7 @@ struct EmpleadoDetalleView: View {
                 }
 
                 VStack(spacing: 0) {
-                    if let persona = empleado.persona {
+                    if let persona = cliente.persona {
                         FilaDetalle(icono: "creditcard", titulo: "Cédula", valor: persona.cedula)
                         Divider()
                         FilaDetalle(icono: "envelope", titulo: "Correo", valor: persona.correo)
@@ -44,22 +44,16 @@ struct EmpleadoDetalleView: View {
                         FilaDetalle(icono: "phone", titulo: "Teléfono", valor: persona.telefono)
                         Divider()
                     }
-                    FilaDetalle(icono: "briefcase", titulo: "Cargo", valor: empleado.cargo)
+                    FilaDetalle(icono: "mappin.and.ellipse", titulo: "Dirección", valor: cliente.direccion)
                     Divider()
-                    FilaDetalle(icono: "building.2", titulo: "Departamento", valor: empleado.departamento)
-                    Divider()
-                    FilaDetalle(icono: "dollarsign.circle", titulo: "Salario", valor: String(format: "$%.2f", empleado.salario))
-                    Divider()
-                    FilaDetalle(icono: "calendar", titulo: "Fecha de Ingreso", valor: empleado.fechaIngreso.formatted(date: .long, time: .omitted))
-                    Divider()
-                    FilaDetalle(icono: "person.badge.key", titulo: "Usuario", valor: empleado.usuario)
+                    FilaDetalle(icono: "star", titulo: "Tipo de Cliente", valor: cliente.tipoCliente)
                 }
                 .padding(.horizontal)
                 .glassEffect(in: .rect(cornerRadius: 16))
             }
             .padding(.vertical)
         }
-        .navigationTitle("Detalle Empleado")
+        .navigationTitle("Detalle Cliente")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

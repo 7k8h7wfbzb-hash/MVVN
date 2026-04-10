@@ -16,6 +16,8 @@ struct EmpleadoFormularioView: View {
     @State private var departamento = ""
     @State private var salarioTexto = ""
     @State private var fechaIngreso = Date()
+    @State private var usuario = ""
+    @State private var contrasena = ""
     @State private var personaSeleccionada: Persona?
 
     var body: some View {
@@ -64,6 +66,29 @@ struct EmpleadoFormularioView: View {
                     }
                     DatePicker("Fecha de Ingreso", selection: $fechaIngreso, in: ...Date(), displayedComponents: .date)
                 }
+
+                Section("Credenciales de Acceso") {
+                    HStack {
+                        TextField("Usuario", text: $usuario)
+                            .autocapitalization(.none)
+                            .textContentType(.username)
+                        if !usuario.isEmpty {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                        }
+                    }
+                    HStack {
+                        SecureField("Contraseña", text: $contrasena)
+                            .textContentType(.newPassword)
+                        if contrasena.count >= 6 {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                        } else if !contrasena.isEmpty {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.red)
+                        }
+                    }
+                }
             }
             .navigationTitle("Nuevo Empleado")
             .navigationBarTitleDisplayMode(.inline)
@@ -83,6 +108,8 @@ struct EmpleadoFormularioView: View {
                                 departamento: departamento,
                                 salario: salario,
                                 fechaIngreso: fechaIngreso,
+                                usuario: usuario,
+                                contrasena: contrasena,
                                 persona: personaSeleccionada
                             )
                             if viewModel.mensajeError == nil {

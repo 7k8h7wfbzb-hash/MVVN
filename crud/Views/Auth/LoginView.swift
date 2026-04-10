@@ -13,6 +13,7 @@ struct LoginView: View {
 
     @State private var usuario = ""
     @State private var contrasena = ""
+    @State private var mostrarRegistro = false
 
     var body: some View {
         NavigationStack {
@@ -69,8 +70,18 @@ struct LoginView: View {
                 .padding(.horizontal)
                 .disabled(usuario.isEmpty || contrasena.isEmpty || authViewModel.estaCargando)
 
+                Button {
+                    mostrarRegistro = true
+                } label: {
+                    Text("¿No tienes cuenta? Regístrate")
+                        .font(.subheadline)
+                }
+
                 Spacer()
                 Spacer()
+            }
+            .sheet(isPresented: $mostrarRegistro) {
+                RegistroView(authViewModel: authViewModel)
             }
             .alert("Error", isPresented: Binding(
                 get: { authViewModel.mensajeError != nil },

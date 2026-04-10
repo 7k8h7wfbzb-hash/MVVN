@@ -1,5 +1,5 @@
 //
-//  EmpleadoFormularioView.swift
+//  ClienteFormularioView.swift
 //  crud
 //
 //  Created by Kleber Oswaldo Muy Landi on 9/4/26.
@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct EmpleadoFormularioView: View {
+struct ClienteFormularioView: View {
 
     @Environment(\.dismiss) private var dismiss
-    var viewModel: EmpleadoViewModel
+    var viewModel: ClienteViewModel
 
-    @State private var cargo = ""
-    @State private var departamento = ""
-    @State private var salarioTexto = ""
-    @State private var fechaIngreso = Date()
+    @State private var direccion = ""
+    @State private var tipoCliente = "Regular"
     @State private var personaSeleccionada: Persona?
+
+    private let tiposCliente = ["Regular", "VIP", "Corporativo"]
 
     var body: some View {
         NavigationStack {
@@ -36,36 +36,22 @@ struct EmpleadoFormularioView: View {
                     }
                 }
 
-                Section("Datos del Empleado") {
+                Section("Datos del Cliente") {
                     HStack {
-                        TextField("Cargo", text: $cargo)
-                        if !cargo.isEmpty {
+                        TextField("Dirección", text: $direccion)
+                        if !direccion.isEmpty {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(.green)
                         }
                     }
-                    HStack {
-                        TextField("Departamento", text: $departamento)
-                        if !departamento.isEmpty {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green)
+                    Picker("Tipo de Cliente", selection: $tipoCliente) {
+                        ForEach(tiposCliente, id: \.self) { tipo in
+                            Text(tipo)
                         }
                     }
-                    HStack {
-                        TextField("Salario", text: $salarioTexto)
-                            .keyboardType(.decimalPad)
-                        if let salario = Double(salarioTexto), salario > 0 {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green)
-                        } else if !salarioTexto.isEmpty {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.red)
-                        }
-                    }
-                    DatePicker("Fecha de Ingreso", selection: $fechaIngreso, in: ...Date(), displayedComponents: .date)
                 }
             }
-            .navigationTitle("Nuevo Empleado")
+            .navigationTitle("Nuevo Cliente")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -77,12 +63,9 @@ struct EmpleadoFormularioView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Guardar") {
                         Task {
-                            let salario = Double(salarioTexto) ?? 0
-                            await viewModel.crearEmpleado(
-                                cargo: cargo,
-                                departamento: departamento,
-                                salario: salario,
-                                fechaIngreso: fechaIngreso,
+                            await viewModel.crearCliente(
+                                direccion: direccion,
+                                tipoCliente: tipoCliente,
                                 persona: personaSeleccionada
                             )
                             if viewModel.mensajeError == nil {

@@ -45,7 +45,7 @@ struct AuthCase {
 
     func registrar(cedula: String, nombre: String, apellido: String, fechaNacimiento: Date, genero: String, correo: String, telefono: String, cargo: String, departamento: String, salario: Double, usuario: String, contrasena: String) async throws -> Empleado {
         // Validar que el usuario no exista
-        guard try await !repositorio.existeUsuario(usuario: usuario) else {
+        guard try await !repositorio.existeUsuario(usuarioBuscado: usuario) else {
             throw AuthError.usuarioExistente
         }
 
